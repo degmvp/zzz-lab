@@ -1,0 +1,125 @@
+<html>
+<head>
+<title>xpan02.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.s1 { color: #808080;}
+.s2 { color: #cc7832;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+xpan02.py</font>
+</center></td></tr></table>
+<pre><span class="s0">/*</span>
+<span class="s0">---------------------------------------</span>
+<span class="s1"># ✅ xpan002</span>
+<span class="s1"># ✅ Pandas criado: 2021/10/27</span>
+<span class="s1"># ✅ Objetivo:sql server - PANDAS Lib</span>
+<span class="s0">---------------------------------------*/</span>
+<span class="s0">CREATE proc [dbo].[xpan002]</span>
+<span class="s0">AS</span>
+<span class="s0">/*</span>
+
+<span class="s0">-------------------------------</span>
+<span class="s1"># TUTORIAL - X1PAN02 2021/07/08</span>
+<span class="s0">-------------------------------</span>
+
+<span class="s2">import </span><span class="s0">pandas </span><span class="s2">as </span><span class="s0">pd</span>
+<span class="s2">import </span><span class="s0">numpy </span><span class="s2">as </span><span class="s0">np</span>
+
+<span class="s1">#Constructing DataFrame from a list</span>
+<span class="s0">d = {</span><span class="s3">'col1'</span><span class="s0">: [</span><span class="s4">1</span><span class="s2">,</span><span class="s4">2</span><span class="s2">,</span><span class="s4">3</span><span class="s2">,</span><span class="s4">4</span><span class="s2">,</span><span class="s4">5</span><span class="s2">,</span><span class="s4">6</span><span class="s0">]</span><span class="s2">, </span><span class="s3">'col2'</span><span class="s0">: [</span><span class="s4">13</span><span class="s2">,</span><span class="s4">14</span><span class="s2">,</span><span class="s4">15</span><span class="s2">,</span><span class="s4">16</span><span class="s2">,</span><span class="s4">17</span><span class="s2">,</span><span class="s4">20</span><span class="s0">]}</span>
+
+ <span class="s0">df = pd.DataFrame(data=d)</span>
+ <span class="s0">print(df)</span>
+   <span class="s0">col1  col2</span>
+<span class="s4">0     1    13</span>
+<span class="s4">1     2    14</span>
+<span class="s4">2     3    15</span>
+<span class="s4">3     4    16</span>
+<span class="s4">4     5    17</span>
+<span class="s4">5     6    20</span>
+
+<span class="s1">#Constructing DataFrame from numpy ndarray:</span>
+<span class="s0">df2 = pd.DataFrame(np.array([[</span><span class="s4">1</span><span class="s2">, </span><span class="s4">2</span><span class="s2">, </span><span class="s4">3</span><span class="s0">]</span><span class="s2">, </span><span class="s0">[</span><span class="s4">4</span><span class="s2">, </span><span class="s4">5</span><span class="s2">, </span><span class="s4">6</span><span class="s0">]</span><span class="s2">, </span><span class="s0">[</span><span class="s4">7</span><span class="s2">, </span><span class="s4">8</span><span class="s2">, </span><span class="s4">9</span><span class="s0">]])</span><span class="s2">,</span><span class="s0">columns=[</span><span class="s3">'a'</span><span class="s2">, </span><span class="s3">'b'</span><span class="s2">, </span><span class="s3">'c'</span><span class="s0">])</span>
+
+<span class="s0">print(df2)</span>
+   <span class="s0">a  b  c</span>
+<span class="s4">0  1  2  3</span>
+<span class="s4">1  4  5  6</span>
+<span class="s4">2  7  8  9</span>
+
+<span class="s0">print(df2.dtypes)</span>
+<span class="s0">a    int32</span>
+<span class="s0">b    int32</span>
+<span class="s0">c    int32</span>
+<span class="s0">dtype: object</span>
+
+<span class="s1">#To enforce a single dtype:</span>
+<span class="s0">df = pd.DataFrame(data=d</span><span class="s2">, </span><span class="s0">dtype=np.float)</span>
+<span class="s0">print(df.dtypes)</span>
+<span class="s0">col1    float64</span>
+<span class="s0">col2    float64</span>
+<span class="s0">dtype: object</span>
+
+<span class="s0">df2.head()</span>
+<span class="s0">a	b	c</span>
+<span class="s4">0	1	2	3</span>
+<span class="s4">1	4	5	6</span>
+<span class="s4">2	7	8	9</span>
+
+<span class="s0">df2.shape </span><span class="s1"># retorna uma tupla linhas x colunas</span>
+<span class="s0">(</span><span class="s4">3</span><span class="s2">, </span><span class="s4">3</span><span class="s0">)</span>
+
+<span class="s1">#Resumo estatístico do DataFrame</span>
+<span class="s0">df2.describe()</span>
+<span class="s0">a	b	c</span>
+<span class="s0">count	</span><span class="s4">3.0	3.0	3.0</span>
+<span class="s0">mean	</span><span class="s4">4.0	5.0	6.0</span>
+<span class="s0">std	</span><span class="s4">3.0	3.0	3.0</span>
+<span class="s0">min	</span><span class="s4">1.0	2.0	3.0</span>
+<span class="s4">25</span><span class="s0">%	</span><span class="s4">2.5	3.5	4.5</span>
+<span class="s4">50</span><span class="s0">%	</span><span class="s4">4.0	5.0	6.0</span>
+<span class="s4">75</span><span class="s0">%	</span><span class="s4">5.5	6.5	7.5</span>
+<span class="s0">max	</span><span class="s4">7.0	8.0	9.0</span>
+
+<span class="s0">df2.info()</span>
+<span class="s0">&lt;</span><span class="s2">class </span><span class="s3">'pandas.core.frame.DataFrame'</span><span class="s0">&gt;</span>
+<span class="s0">RangeIndex: </span><span class="s4">3 </span><span class="s0">entries</span><span class="s2">, </span><span class="s4">0 </span><span class="s0">to </span><span class="s4">2</span>
+<span class="s0">Data columns (total </span><span class="s4">3 </span><span class="s0">columns):</span>
+
+ <span class="s1">#   Column  Non-Null Count  Dtype</span>
+<span class="s0">---  ------  --------------  -----</span>
+ <span class="s4">0   </span><span class="s0">a       </span><span class="s4">3 </span><span class="s0">non-null      int32</span>
+ <span class="s4">1   </span><span class="s0">b       </span><span class="s4">3 </span><span class="s0">non-null      int32</span>
+ <span class="s4">2   </span><span class="s0">c       </span><span class="s4">3 </span><span class="s0">non-null      int32</span>
+<span class="s0">dtypes: int32(</span><span class="s4">3</span><span class="s0">)</span>
+<span class="s0">memory usage: </span><span class="s4">164.0 </span><span class="s0">bytes</span>
+
+<span class="s0">df.tail()</span>
+<span class="s0">col1	col2</span>
+<span class="s4">1	2.0	14.0</span>
+<span class="s4">2	3.0	15.0</span>
+<span class="s4">3	4.0	16.0</span>
+<span class="s4">4	5.0	17.0</span>
+<span class="s4">5	6.0	20.0</span>
+
+<span class="s0">df2.loc[::-</span><span class="s4">1</span><span class="s0">] </span><span class="s1"># inverte os indices</span>
+<span class="s0">a	b	c</span>
+<span class="s4">2	7	8	9</span>
+<span class="s4">1	4	5	6</span>
+<span class="s4">0	1	2	3</span>
+<span class="s0">df2.loc[::</span><span class="s4">1</span><span class="s0">] </span><span class="s1"># restaura os indices</span>
+<span class="s0">a	b	c</span>
+<span class="s4">0	1	2	3</span>
+<span class="s4">1	4	5	6</span>
+<span class="s4">2	7	8	9</span>
+<span class="s0">*/</span></pre>
+</body>
+</html>

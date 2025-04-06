@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vertical Isometric Menu</title>
+  <style>
+    /* Importação de fonte */
+    @import url('https://fonts.googleapis.com/css?family=Oswald:400,700');
+
+    /* Reset geral */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Oswald', sans-serif;
+    }
+
+    /* Estilo da página */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #434750;
+    }
+
+    /* Estilo do contêiner do menu */
+    ul {
+      position: relative;
+      transform: skewY(-15deg);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Estilo dos itens do menu */
+    ul li {
+      position: relative;
+      list-style: none;
+      width: 200px;
+      background: #3e3f46;
+      padding: 15px;
+      z-index: var(--i);
+      margin-bottom: 10px; /* Espaçamento entre os itens */
+      transition: 0.5s;
+    }
+
+    /* Efeito hover nos itens do menu */
+    ul li:hover {
+      background: var(--clr);
+      transform: translateX(50px);
+    }
+
+    /* Efeito antes (lado esquerdo) */
+    ul li::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -40px;
+      width: 40px;
+      height: 100%;
+      background: #2e3133;
+      transform-origin: right;
+      transform: skewY(45deg);
+      transition: 0.5s;
+    }
+
+    ul li:hover::before {
+      background: #1f5378;
+    }
+
+    /* Efeito depois (parte superior) */
+    ul li::after {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      background: #35383e;
+      transform-origin: bottom;
+      transform: skewX(45deg);
+      transition: 0.5s;
+    }
+
+    ul li:hover::after {
+      background: #2982b9;
+    }
+
+    /* Estilo do texto dentro dos itens do menu */
+    ul li a {
+      text-decoration: none;
+      color: #999;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: 0.5s;
+    }
+
+    ul li:hover a {
+      color: #fff;
+    }
+
+    /* Sombra para o último item */
+    ul li:last-child::after {
+      box-shadow: -120px 120px 20px rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+<body>
+  <!-- Menu isométrico -->
+  <ul>
+    <li style="--i:11;--clr:#1da1f2;"><a href="./ZZZ-BINARY/appbyn.html">BINARY SYSTEM - CALC</a></li>
+    <li style="--i:10;--clr:#25d366;"><a href="./ZZZ-HEXA/hexa.html">POWER OF 2 AND HEXA</a></li>
+    <li style="--i:9;--clr:#8a00e6;"><a href="./ZZZSQLJS/sql.html">BIT ARITHMETIC </a></li>
+    <li style="--i:8;--clr:#c32aa3;"><a href="https://www.youtube.com/watch?v=38N1W4f9IF8">CODE ON BITWISE</a></li>
+    <li style="--i:7;--clr:#0bcca8;"><a href="./TXT-IMG/txt-toimg.html">PYTHON - TXT TO IMAGE</a></li>
+    <li style="--i:6;--clr:#cc0b2f;"><a href="./GRAFX/grafx.gif">CODE - CUBE 3D</a></li>
+    <li style="--i:5;--clr:#660000;"><a href="./GRWIRE/grafx.html">CODE - GRAFICO 3D</a></li>
+    <li style="--i:4;--clr:#cc800a;"><a href="https://www.youtube.com/watch?v=pVcuigMNFgA">STACK AND HEAP C++</a></li>
+    <li style="--i:3;--clr:#0a10cc;"><a href="./ZZZ-X-HTML/main.go.html">GOLANG -WASM </a></li>
+    <li style="--i:2;--clr:#cc0aba;"><a href="./ZZZ-ZNODE/index.html">NODE.JS HTTP SRV </a></li>
+    <li style="--i:1;--clr:#0acc1c;"><a href="./ZZZ-X-PRJ/index.html">CODE - SLIDESHOW</a></li>
+  </ul>
+</body>
+</html>

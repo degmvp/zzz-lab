@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Go + WebAssembly</title>
+    <h1>Teste de Go com HTML</h1>
+    <h2>Go HTML WebAssembly </h2>
+    <h2>App.html --> app.wasm </h2>
+    <h2>$env:GOOS="js"; $env:GOARCH="wasm"; go build -o app.wasm</h2>
+    <h2>python -m http.server 8080</h2>
+    <h2>http://localhost:8080/app.html</h2>
+<style>
+
+        body {
+        background:radial-gradient(white,#f7b652);
+      }
+</style>    
+
+</head>
+<body>
+
+    <input type="text" id="nameInput" placeholder="Digite seu nome">
+    <button onclick="callGoFunction()">Chamar Função Go</button>
+    <p id="result"></p>
+
+    <!-- Carrega o script auxiliar do Go -->
+    <script src="wasm_exec.js"></script>
+    <script>
+        // Função para carregar e executar o WebAssembly
+        async function loadWasm() {
+            const go = new Go();
+            const result = await WebAssembly.instantiateStreaming(
+                fetch("app.wasm"), go.importObject
+            );
+            go.run(result.instance);
+        }
+
+        // Chama a função Go quando o WASM estiver carregado
+        function callGoFunction() {
+            const name = document.getElementById("nameInput").value;
+            const result = helloFromGo(name); // Chama a função registrada pelo Go
+            document.getElementById("result").innerText = result;
+        }
+
+        // Carrega o WASM ao iniciar a página
+        loadWasm();
+    </script>
+</body>
+</html>

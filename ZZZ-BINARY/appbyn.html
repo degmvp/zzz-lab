@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Operações Binárias</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background:radial-gradient(white,#026932);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+          background-color: rgba(255, 255, 255, 0.8);
+          border-radius: 10px;
+          padding: 20px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          max-width: 500px;
+          margin: 50px auto;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+        }
+        .bit-display {
+            font-family: monospace;
+            font-size: 16px;
+            letter-spacing: 1px;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #eee;
+            border-radius: 4px;
+            text-align: center;
+            word-break: break-all;
+        }
+        .bit-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        .bit-table td {
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+        .bit-table tr:first-child td {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .bit-cell {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            margin: 2px;
+            border-radius: 3px;
+        }
+        .bit-1 {
+            background-color: #3498db;
+            color: white;
+        }
+        .bit-0 {
+            background-color: #eee;
+            color: #666;
+        }
+        .byte-separator {
+            margin: 0 5px;
+            color: #999;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Operações Binárias</h1>
+    
+    <div class="tabs">
+        <div class="tab active" data-tab="conversion">Conversão</div>
+        <div class="tab" data-tab="bitwise">Operações Bit a Bit</div>
+        <div class="tab" data-tab="bitmanipulation">Manipulação de Bits</div>
+        <div class="tab" data-tab="visualization">Visualização Binária</div>
+    </div>
+    
+    <div id="conversion" class="tab-content active container">
+        <h2>Conversão entre Sistemas</h2>
+        <div class="input-group">
+            <label for="conversion-input">Valor:</label>
+            <input type="text" id="conversion-input" placeholder="Digite um número">
+        </div>
+        <div class="input-group">
+            <label for="conversion-from">De:</label>
+            <select id="conversion-from">
+                <option value="decimal">Decimal</option>
+                <option value="binary">Binário</option>
+                <option value="hex">Hexadecimal</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="conversion-to">Para:</label>
+            <select id="conversion-to">
+                <option value="binary">Binário</option>
+                <option value="decimal">Decimal</option>
+                <option value="hex">Hexadecimal</option>
+            </select>
+        </div>
+        <button id="convert-btn">Converter</button>
+        <div id="conversion-result" class="result" style="display: none;"></div>
+    </div>
+    
+    <div id="bitwise" class="tab-content container">
+        <h2>Operações Bit a Bit</h2>
+        <div class="input-group">
+            <label for="bitwise-num1">Primeiro número (decimal):</label>
+            <input type="number" id="bitwise-num1" placeholder="Ex: 42">
+        </div>
+        <div class="input-group">
+            <label for="bitwise-operator">Operação:</label>
+            <select id="bitwise-operator">
+                <option value="AND">AND (&)</option>
+                <option value="OR">OR (|)</option>
+                <option value="XOR">XOR (^)</option>
+                <option value="NOT">NOT (~)</option>
+            </select>
+        </div>
+        <div class="input-group" id="second-number-group">
+            <label for="bitwise-num2">Segundo número (decimal):</label>
+            <input type="number" id="bitwise-num2" placeholder="Ex: 31">
+        </div>
+        <button id="calculate-bitwise">Calcular</button>
+        <div id="bitwise-result" class="result" style="display: none;"></div>
+    </div>
+    
+    <div id="bitmanipulation" class="tab-content container">
+        <h2>Manipulação de Bits</h2>
+        <div class="input-group">
+            <label for="manipulation-number">Número (decimal):</label>
+            <input type="number" id="manipulation-number" placeholder="Ex: 42">
+        </div>
+        <div class="input-group">
+            <label for="bit-operation">Operação:</label>
+            <select id="bit-operation">
+                <option value="get">Obter valor do bit</option>
+                <option value="set">Definir bit como 1</option>
+                <option value="clear">Definir bit como 0</option>
+                <option value="toggle">Alternar valor do bit</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="bit-position">Posição do bit (0-31):</label>
+            <input type="number" id="bit-position" min="0" max="31" placeholder="Posição (0-31)">
+        </div>
+        <button id="manipulate-bit">Aplicar</button>
+        <div id="manipulation-result" class="result" style="display: none;"></div>
+    </div>
+    
+    <div id="visualization" class="tab-content container">
+        <h2>Visualização Binária</h2>
+        <div class="input-group">
+            <label for="visualization-number">Número (decimal):</label>
+            <input type="number" id="visualization-number" placeholder="Digite um número para visualizar" value="305419896">
+        </div>
+        <button id="visualize-btn">Visualizar</button>
+        <div id="visualization-result" class="result" style="display: none;">
+            <div id="bit-representation" class="bit-display"></div>
+            <div id="bit-table-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Implementação do módulo sistema-binario.js
+        const binaryOperations = {
+            // Converte número decimal para representação binária de 32 bits
+            decimalToBinary: (decimal) => {
+                // Garante que o valor está no intervalo de 32 bits com sinal
+                const value = decimal >>> 0; // Força uma representação de 32 bits sem sinal
+                return value.toString(2).padStart(32, '0');
+            },
+            
+            // Converte string binária para decimal
+            binaryToDecimal: (binary) => {
+                return parseInt(binary, 2);
+            },
+            
+            // Operação AND bit a bit
+            bitwiseAND: (a, b) => {
+                const result = a & b;
+                return {
+                    decimal: result,
+                    binary: result.toString(2).padStart(32, '0')
+                };
+            },
+            
+            // Operação OR bit a bit
+            bitwiseOR: (a, b) => {
+                const result = a | b;
+                return {
+                    decimal: result,
+                    binary: result.toString(2).padStart(32, '0')
+                };
+            },
+            
+            // Operação XOR bit a bit
+            bitwiseXOR: (a, b) => {
+                const result = a ^ b;
+                return {
+                    decimal: result,
+                    binary: result.toString(2).padStart(32, '0')
+                };
+            },
+            
+            // Operação NOT bit a bit (complemento de 1)
+            bitwiseNOT: (a) => {
+                const result = ~a;
+                return {
+                    decimal: result,
+                    binary: result.toString(2).padStart(32, '0')
+                };
+            },
+            
+            // Extrair um bit específico (0-31)
+            getBit: (num, position) => {
+                if (position < 0 || position > 31) {
+                    throw new Error('Posição deve estar entre 0 e 31');
+                }
+                return (num & (1 << position)) !== 0 ? 1 : 0;
+            },
+            
+            // Modificar um bit específico (0-31)
+            setBit: (num, position, value) => {
+                if (position < 0 || position > 31) {
+                    throw new Error('Posição deve estar entre 0 e 31');
+                }
+                if (value === 1) {
+                    return num | (1 << position);
+                } else {
+                    return num & ~(1 << position);
+                }
+            },
+            
+            // Mostrar representação bit a bit de um número de 32 bits
+            showBitRepresentation: (num) => {
+                const binary = num.toString(2).padStart(32, '0');
+                const byteGroups = [];
+                
+                for (let i = 0; i < binary.length; i += 8) {
+                    byteGroups.push(binary.slice(i, i + 8));
+                }
+                
+                return {
+                    binary: binary,
+                    formatted: byteGroups.join(' '),
+                    bytes: byteGroups
+                };
+            },
+            
+            // Adicional: Converter decimal para hexadecimal
+            decimalToHex: (decimal) => {
+                return (decimal >>> 0).toString(16).toUpperCase().padStart(8, '0');
+            },
+            
+            // Adicional: Converter hexadecimal para decimal
+            hexToDecimal: (hex) => {
+                return parseInt(hex, 16);
+            },
+            
+            // Adicional: Converter binário para hexadecimal
+            binaryToHex: (binary) => {
+                return parseInt(binary, 2).toString(16).toUpperCase().padStart(8, '0');
+            },
+            
+            // Adicional: Converter hexadecimal para binário
+            hexToBinary: (hex) => {
+                return parseInt(hex, 16).toString(2).padStart(32, '0');
+            }
+        };
+
+        // Funções de interface da aplicação
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navegação por tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Desativar todas as tabs e conteúdos
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Ativar tab clicada e seu conteúdo
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Verificação de input NOT (não precisa de segundo número)
+            document.getElementById('bitwise-operator').addEventListener('change', function() {
+                const secondNumberGroup = document.getElementById('second-number-group');
+                if (this.value === 'NOT') {
+                    secondNumberGroup.style.display = 'none';
+                } else {
+                    secondNumberGroup.style.display = 'block';
+                }
+            });
+            
+            // Converter entre sistemas
+            document.getElementById('convert-btn').addEventListener('click', function() {
+                const input = document.getElementById('conversion-input').value;
+                const fromSystem = document.getElementById('conversion-from').value;
+                const toSystem = document.getElementById('conversion-to').value;
+                const resultDiv = document.getElementById('conversion-result');
+                
+                try {
+                    let result, decimal;
+                    
+                    // Primeiro converte para decimal como intermediário
+                    switch(fromSystem) {
+                        case 'decimal':
+                            decimal = parseInt(input);
+                            break;
+                        case 'binary':
+                            decimal = binaryOperations.binaryToDecimal(input);
+                            break;
+                        case 'hex':
+                            decimal = binaryOperations.hexToDecimal(input);
+                            break;
+                    }
+                    
+                    // Depois converte de decimal para o sistema alvo
+                    switch(toSystem) {
+                        case 'decimal':
+                            result = decimal;
+                            break;
+                        case 'binary':
+                            result = binaryOperations.decimalToBinary(decimal);
+                            break;
+                        case 'hex':
+                            result = binaryOperations.decimalToHex(decimal);
+                            break;
+                    }
+                    
+                    resultDiv.innerHTML = `
+                        <h3>Resultado da conversão:</h3>
+                        <p><strong>${input}</strong> em ${fromSystem} equivale a <strong>${result}</strong> em ${toSystem}</p>
+                    `;
+                    resultDiv.style.display = 'block';
+                    
+                } catch (error) {
+                    resultDiv.innerHTML = `<p style="color: red;">Erro: ${error.message || 'Entrada inválida'}</p>`;
+                    resultDiv.style.display = 'block';
+                }
+            });
+            
+            // Operações bit a bit
+            document.getElementById('calculate-bitwise').addEventListener('click', function() {
+                const num1 = parseInt(document.getElementById('bitwise-num1').value);
+                const operator = document.getElementById('bitwise-operator').value;
+                const resultDiv = document.getElementById('bitwise-result');
+                
+                try {
+                    let result;
+                    
+                    if (operator === 'NOT') {
+                        result = binaryOperations.bitwiseNOT(num1);
+                        resultDiv.innerHTML = `
+                            <h3>Resultado da operação ${operator}:</h3>
+                            <p>~${num1} = ${result.decimal} (decimal)</p>
+                            <div class="bit-display">${formatBinaryWithSpaces(result.binary)}</div>
+                        `;
+                    } else {
+                        const num2 = parseInt(document.getElementById('bitwise-num2').value);
+                        
+                        switch(operator) {
+                            case 'AND':
+                                result = binaryOperations.bitwiseAND(num1, num2);
+                                break;
+                            case 'OR':
+                                result = binaryOperations.bitwiseOR(num1, num2);
+                                break;
+                            case 'XOR':
+                                result = binaryOperations.bitwiseXOR(num1, num2);
+                                break;
+                        }
+                        
+                        const binary1 = binaryOperations.decimalToBinary(num1);
+                        const binary2 = binaryOperations.decimalToBinary(num2);
+                        
+                        resultDiv.innerHTML = `
+                            <h3>Resultado da operação ${operator}:</h3>
+                            <p>${num1} ${getOperatorSymbol(operator)} ${num2} = ${result.decimal} (decimal)</p>
+                            <p>Número 1:</p>
+                            <div class="bit-display">${formatBinaryWithSpaces(binary1)}</div>
+                            <p>Número 2:</p>
+                            <div class="bit-display">${formatBinaryWithSpaces(binary2)}</div>
+                            <p>Resultado:</p>
+                            <div class="bit-display">${formatBinaryWithSpaces(result.binary)}</div>
+                        `;
+                    }
+                    
+                    resultDiv.style.display = 'block';
+                    
+                } catch (error) {
+                    resultDiv.innerHTML = `<p style="color: red;">Erro: ${error.message || 'Entrada inválida'}</p>`;
+                    resultDiv.style.display = 'block';
+                }
+            });
+            
+            // Manipulação de bits
+            document.getElementById('manipulate-bit').addEventListener('click', function() {
+                const num = parseInt(document.getElementById('manipulation-number').value);
+                const position = parseInt(document.getElementById('bit-position').value);
+                const operation = document.getElementById('bit-operation').value;
+                const resultDiv = document.getElementById('manipulation-result');
+                
+                try {
+                    if (isNaN(num)) throw new Error('Por favor, insira um número válido');
+                    if (isNaN(position) || position < 0 || position > 31) throw new Error('Posição deve estar entre 0 e 31');
+                    
+                    const originalBinary = binaryOperations.decimalToBinary(num);
+                    let result, newBinary;
+                    
+                    switch(operation) {
+                        case 'get':
+                            const bitValue = binaryOperations.getBit(num, position);
+                            resultDiv.innerHTML = `
+                                <h3>Valor do bit na posição ${position}:</h3>
+                                <p>Número original: ${num} (decimal)</p>
+                                <div class="bit-display">${formatBinaryWithSpaces(originalBinary)}</div>
+                                <p>Bit na posição ${position}: <strong>${bitValue}</strong></p>
+                            `;
+                            break;
+                            
+                        case 'set':
+                            result = binaryOperations.setBit(num, position, 1);
+                            newBinary = binaryOperations.decimalToBinary(result);
+                            resultDiv.innerHTML = `
+                                <h3>Definir bit na posição ${position} como 1:</h3>
+                                <p>Número original: ${num} (decimal)</p>
+                                <div class="bit-display">${formatBinaryWithSpaces(originalBinary)}</div>
+                                <p>Resultado: ${result} (decimal)</p>
+                                <div class="bit-display">${formatBinaryWithSpaces(newBinary)}</div>
+                            `;
+                            break;
+                            
+                        case 'clear':
+                            result = binaryOperations.setBit(num, position, 0);
+                            newBinary = binaryOperations.decimalToBinary(result);
+                            resultDiv.innerHTML = `
+                                <h3>Definir bit na posição ${position} como 0:</h3>
+                                <p>Número original: ${num} (decimal)</p>
+                                <div class="bit-display">${formatBinaryWithSpaces(originalBinary)}</div>
+                                <p>Resultado: ${result} (decimal)</p>
+                                <div class="bit-display">${formatBinaryWithSpaces(newBinary)}</div>
+                            `;
+                            break;
+                            
+                        case 'toggle':
+                            const currentBit = binaryOperations.getBit(num, position);
+                            result = binaryOperations.setBit(num, position, currentBit === 0 ? 1 : 0);
+                            newBinary = binaryOperations.decimalToBinary(result);
+                            resultDiv.innerHTML = `
+                                <h3>Alternar bit na posição ${position}:</h3>
+                                <p>Número original: ${num} (decimal)</p>
+                                <div class="bit-display">${formatBinaryWithSpaces(originalBinary)}</div>
+                                <p>Bit original na posição ${position}: ${currentBit}</p>
+                                <p>Bit alternado na posição ${position}: ${currentBit === 0 ? 1 : 0}</p>
+                                <p>Resultado: ${result} (decimal)</p>
+                                <div class="bit-display">${formatBinaryWithSpaces(newBinary)}</div>
+                            `;
+                            break;
+                    }
+                    
+                    resultDiv.style.display = 'block';
+                    
+                } catch (error) {
+                    resultDiv.innerHTML = `<p style="color: red;">Erro: ${error.message || 'Entrada inválida'}</p>`;
+                    resultDiv.style.display = 'block';
+                }
+            });
+            
+            // Visualização binária
+            document.getElementById('visualize-btn').addEventListener('click', function() {
+                const num = parseInt(document.getElementById('visualization-number').value);
+                const resultDiv = document.getElementById('visualization-result');
+                const bitRepDiv = document.getElementById('bit-representation');
+                const tableContainer = document.getElementById('bit-table-container');
+                
+                try {
+                    if (isNaN(num)) throw new Error('Por favor, insira um número válido');
+                    
+                    const representation = binaryOperations.showBitRepresentation(num);
+                    
+                    // Exibir representação binária formatada
+                    bitRepDiv.textContent = representation.formatted;
+                    
+                    // Construir representação visual com tabela de bits
+                    let bitTableHTML = '<table class="bit-table">';
+                    
+                    // Linha de índices
+                    bitTableHTML += '<tr>';
+                    for (let i = 31; i >= 0; i--) {
+                        bitTableHTML += `<td>${i}</td>`;
+                        if (i % 8 === 0 && i > 0) {
+                            bitTableHTML += '<td class="byte-separator">|</td>';
+                        }
+                    }
+                    bitTableHTML += '</tr>';
+                    
+                    // Linha de valores binários
+                    bitTableHTML += '<tr>';
+                    const binary = representation.binary;
+                    for (let i = 0; i < 32; i++) {
+                        const bitValue = binary.charAt(i);
+                        bitTableHTML += `<td class="bit-${bitValue}">${bitValue}</td>`;
+                        if ((i + 1) % 8 === 0 && i < 31) {
+                            bitTableHTML += '<td class="byte-separator">|</td>';
+                        }
+                    }
+                    bitTableHTML += '</tr>';
+                    
+                    // Fechar tabela
+                    bitTableHTML += '</table>';
+                    
+                    // Adicionar representações adicionais
+                    const hexValue = binaryOperations.decimalToHex(num);
+                    
+                    // Montar conteúdo completo
+                    tableContainer.innerHTML = bitTableHTML;
+                    resultDiv.innerHTML += `
+                        <h3>Representações:</h3>
+                        <p><strong>Decimal:</strong> ${num}</p>
+                        <p><strong>Binário:</strong> ${representation.formatted}</p>
+                        <p><strong>Hexadecimal:</strong> 0x${hexValue}</p>
+                        
+                        <h3>Informações de Potências de 2:</h3>
+                        <div id="powers-of-two"></div>
+                    `;
+                    
+                    // Mostrar quais potências de 2 compõem o número
+                    const powersDiv = document.getElementById('powers-of-two');
+                    const powersHTML = getPowersOfTwo(num);
+                    powersDiv.innerHTML = powersHTML;
+                    
+                    resultDiv.style.display = 'block';
+                    
+                } catch (error) {
+                    resultDiv.innerHTML = `<p style="color: red;">Erro: ${error.message || 'Entrada inválida'}</p>`;
+                    resultDiv.style.display = 'block';
+                }
+            });
+            
+            // Funções auxiliares
+            function formatBinaryWithSpaces(binary) {
+                let result = '';
+                for (let i = 0; i < binary.length; i++) {
+                    result += binary.charAt(i);
+                    if ((i + 1) % 8 === 0 && i < binary.length - 1) {
+                        result += ' ';
+                    }
+                }
+                return result;
+            }
+            
+            function getOperatorSymbol(operator) {
+                switch(operator) {
+                    case 'AND': return '&';
+                    case 'OR': return '|';
+                    case 'XOR': return '^';
+                    case 'NOT': return '~';
+                    default: return operator;
+                }
+            }
+            
+            function getPowersOfTwo(num) {
+                let powers = [];
+                for (let i = 0; i <= 31; i++) {
+                    if ((num & (1 << i)) !== 0) {
+                        powers.push({power: i, value: Math.pow(2, i)});
+                    }
+                }
+                
+                if (powers.length === 0) {
+                    return '<p>O número é zero (não contém potências de 2)</p>';
+                }
+                
+                let html = '<p>Este número é composto pelas seguintes potências de 2:</p>';
+                html += '<ul>';
+                powers.forEach(p => {
+                    html += `<li>2<sup>${p.power}</sup> = ${p.value}</li>`;
+                });
+                html += '</ul>';
+                
+                html += '<p>Fórmula: ';
+                html += powers.map(p => `2<sup>${p.power}</sup>`).join(' + ');
+                html += ` = ${num}</p>`;
+                
+                return html;
+            }
+            
+            // Inicializar com um exemplo
+            document.getElementById('visualize-btn').click();
+        });
+    </script>
+</body>
+</html>

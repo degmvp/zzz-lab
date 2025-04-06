@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>txt-toimg.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+txt-toimg.py</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">from </span><span class="s1">PIL </span><span class="s0">import </span><span class="s1">Image</span><span class="s0">, </span><span class="s1">ImageDraw</span><span class="s0">, </span><span class="s1">ImageFont</span>
+<a name="l2"><span class="ln">2    </span></a>
+<a name="l3"><span class="ln">3    </span></a><span class="s2"># Função para criar uma imagem a partir de um arquivo .txt</span>
+<a name="l4"><span class="ln">4    </span></a><span class="s0">def </span><span class="s1">txt_to_image(txt_file</span><span class="s0">, </span><span class="s1">output_image):</span>
+<a name="l5"><span class="ln">5    </span></a>    <span class="s2"># Lê o conteúdo do arquivo .txt</span>
+<a name="l6"><span class="ln">6    </span></a>    <span class="s0">with </span><span class="s1">open(txt_file</span><span class="s0">, </span><span class="s3">'r'</span><span class="s0">, </span><span class="s1">encoding=</span><span class="s3">'utf-8'</span><span class="s1">) </span><span class="s0">as </span><span class="s1">file:</span>
+<a name="l7"><span class="ln">7    </span></a>        <span class="s1">text = file.read()</span>
+<a name="l8"><span class="ln">8    </span></a>
+<a name="l9"><span class="ln">9    </span></a>    <span class="s2"># Configurações da imagem</span>
+<a name="l10"><span class="ln">10   </span></a>    <span class="s1">font_size = </span><span class="s4">20  </span><span class="s2"># Tamanho da fonte</span>
+<a name="l11"><span class="ln">11   </span></a>    <span class="s1">font = ImageFont.truetype(</span><span class="s3">&quot;arial.ttf&quot;</span><span class="s0">, </span><span class="s1">font_size)  </span><span class="s2"># Fonte (use uma fonte disponível no seu sistema)</span>
+<a name="l12"><span class="ln">12   </span></a>    <span class="s1">padding = </span><span class="s4">20  </span><span class="s2"># Espaçamento nas bordas</span>
+<a name="l13"><span class="ln">13   </span></a>    <span class="s1">line_height = font_size + </span><span class="s4">5  </span><span class="s2"># Altura entre as linhas</span>
+<a name="l14"><span class="ln">14   </span></a>
+<a name="l15"><span class="ln">15   </span></a>    <span class="s2"># Calcula as dimensões da imagem com base no texto</span>
+<a name="l16"><span class="ln">16   </span></a>    <span class="s1">lines = text.split(</span><span class="s3">'</span><span class="s0">\n</span><span class="s3">'</span><span class="s1">)</span>
+<a name="l17"><span class="ln">17   </span></a>    <span class="s1">max_line_width = max(font.getlength(line) </span><span class="s0">for </span><span class="s1">line </span><span class="s0">in </span><span class="s1">lines)</span>
+<a name="l18"><span class="ln">18   </span></a>    <span class="s1">image_width = int(max_line_width) + </span><span class="s4">2 </span><span class="s1">* padding</span>
+<a name="l19"><span class="ln">19   </span></a>    <span class="s1">image_height = len(lines) * line_height + </span><span class="s4">2 </span><span class="s1">* padding</span>
+<a name="l20"><span class="ln">20   </span></a>
+<a name="l21"><span class="ln">21   </span></a>    <span class="s2"># Cria a imagem</span>
+<a name="l22"><span class="ln">22   </span></a>    <span class="s1">image = Image.new(</span><span class="s3">&quot;RGB&quot;</span><span class="s0">, </span><span class="s1">(image_width</span><span class="s0">, </span><span class="s1">image_height)</span><span class="s0">, </span><span class="s1">color=</span><span class="s3">&quot;white&quot;</span><span class="s1">)</span>
+<a name="l23"><span class="ln">23   </span></a>    <span class="s1">draw = ImageDraw.Draw(image)</span>
+<a name="l24"><span class="ln">24   </span></a>
+<a name="l25"><span class="ln">25   </span></a>    <span class="s2"># Desenha o texto na imagem</span>
+<a name="l26"><span class="ln">26   </span></a>    <span class="s1">y = padding</span>
+<a name="l27"><span class="ln">27   </span></a>    <span class="s0">for </span><span class="s1">line </span><span class="s0">in </span><span class="s1">lines:</span>
+<a name="l28"><span class="ln">28   </span></a>        <span class="s1">draw.text((padding</span><span class="s0">, </span><span class="s1">y)</span><span class="s0">, </span><span class="s1">line</span><span class="s0">, </span><span class="s1">font=font</span><span class="s0">, </span><span class="s1">fill=</span><span class="s3">&quot;black&quot;</span><span class="s1">)</span>
+<a name="l29"><span class="ln">29   </span></a>        <span class="s1">y += line_height</span>
+<a name="l30"><span class="ln">30   </span></a>
+<a name="l31"><span class="ln">31   </span></a>    <span class="s2"># Salva a imagem</span>
+<a name="l32"><span class="ln">32   </span></a>    <span class="s1">image.save(output_image)</span>
+<a name="l33"><span class="ln">33   </span></a>    <span class="s1">print(</span><span class="s3">f&quot;Imagem gerada: </span><span class="s0">{</span><span class="s1">output_image</span><span class="s0">}</span><span class="s3">&quot;</span><span class="s1">)</span>
+<a name="l34"><span class="ln">34   </span></a>
+<a name="l35"><span class="ln">35   </span></a><span class="s2"># Exemplo de uso</span>
+<a name="l36"><span class="ln">36   </span></a><span class="s1">txt_to_image(</span><span class="s3">&quot;code-node.txt&quot;</span><span class="s0">, </span><span class="s3">&quot;saida.jpg&quot;</span><span class="s1">)</span>
+<a name="l37"><span class="ln">37   </span></a></pre>
+</body>
+</html>

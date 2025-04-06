@@ -1,0 +1,155 @@
+<html>
+<head>
+<title>xpan03.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.s1 { color: #808080;}
+.s2 { color: #cc7832;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+xpan03.py</font>
+</center></td></tr></table>
+<pre>
+<span class="s0">/*</span>
+<span class="s0">---------------------------------------</span>
+<span class="s1"># ✅ xpan003</span>
+<span class="s1"># ✅ Pandas criado: 2021/10/27</span>
+<span class="s1"># ✅ Objetivo:sql server - PANDAS Lib</span>
+<span class="s0">---------------------------------------*/</span>
+<span class="s0">CREATE proc [dbo].[xpan003]</span>
+<span class="s0">AS</span>
+<span class="s0">/*</span>
+
+        <span class="s1">#---------------------------------------------------#</span>
+        <span class="s1">#  Objetivo:Pandas head(),DataFrame(),Series()      #</span>
+        <span class="s1">#           read_excel(),read_csv(),loc             #</span>
+        <span class="s1">#---------------------------------------------------#</span>
+<span class="s2">import </span><span class="s0">pandas </span><span class="s2">as </span><span class="s0">pd</span>
+<span class="s2">import </span><span class="s0">numpy </span><span class="s2">as </span><span class="s0">np</span>
+        <span class="s0">df = pd.DataFrame(np.random.randn(</span><span class="s3">5</span><span class="s2">, </span><span class="s3">4</span><span class="s0">)</span><span class="s2">,</span>
+                          <span class="s0">index=</span><span class="s4">'A B C D E'</span><span class="s0">.split()</span><span class="s2">,</span>
+                          <span class="s0">columns=</span><span class="s4">'W X Y Z'</span><span class="s0">.split())</span>
+        <span class="s0">print(df)</span>
+          <span class="s0">W         X         Y         Z</span>
+<span class="s0">A  </span><span class="s3">0.159219 </span><span class="s0">-</span><span class="s3">0.017063 </span><span class="s0">-</span><span class="s3">0.249028 </span><span class="s0">-</span><span class="s3">0.372518</span>
+<span class="s0">B -</span><span class="s3">1.682665 </span><span class="s0">-</span><span class="s3">1.067053  0.252465 </span><span class="s0">-</span><span class="s3">0.734297</span>
+<span class="s0">C -</span><span class="s3">0.352475  0.823740 </span><span class="s0">-</span><span class="s3">0.204616 </span><span class="s0">-</span><span class="s3">1.155274</span>
+<span class="s0">D -</span><span class="s3">1.128802  0.043349 </span><span class="s0">-</span><span class="s3">0.927690 </span><span class="s0">-</span><span class="s3">1.620974</span>
+<span class="s0">E -</span><span class="s3">0.322817  0.719264 </span><span class="s0">-</span><span class="s3">0.601075 </span><span class="s0">-</span><span class="s3">0.856726</span>
+
+        <span class="s0">print(df.keys())</span>
+<span class="s0">Index([</span><span class="s4">'W'</span><span class="s2">, </span><span class="s4">'X'</span><span class="s2">, </span><span class="s4">'Y'</span><span class="s2">, </span><span class="s4">'Z'</span><span class="s0">]</span><span class="s2">, </span><span class="s0">dtype=</span><span class="s4">'object'</span><span class="s0">)</span>
+        <span class="s0">print(df[</span><span class="s4">'W'</span><span class="s0">])</span>
+<span class="s0">A    </span><span class="s3">0.159219</span>
+<span class="s0">B   -</span><span class="s3">1.682665</span>
+<span class="s0">C   -</span><span class="s3">0.352475</span>
+<span class="s0">D   -</span><span class="s3">1.128802</span>
+<span class="s0">E   -</span><span class="s3">0.322817</span>
+<span class="s0">Name: W</span><span class="s2">, </span><span class="s0">dtype: float64</span>
+
+        <span class="s0">print(df[[</span><span class="s4">'W'</span><span class="s2">, </span><span class="s4">'Z'</span><span class="s0">]])</span>
+          <span class="s0">W         Z</span>
+<span class="s0">A  </span><span class="s3">0.159219 </span><span class="s0">-</span><span class="s3">0.372518</span>
+<span class="s0">B -</span><span class="s3">1.682665 </span><span class="s0">-</span><span class="s3">0.734297</span>
+<span class="s0">C -</span><span class="s3">0.352475 </span><span class="s0">-</span><span class="s3">1.155274</span>
+<span class="s0">D -</span><span class="s3">1.128802 </span><span class="s0">-</span><span class="s3">1.620974</span>
+<span class="s0">E -</span><span class="s3">0.322817 </span><span class="s0">-</span><span class="s3">0.856726</span>
+
+<span class="s1">#DataFrame Create Column</span>
+<span class="s0">df[</span><span class="s4">'novaCol'</span><span class="s0">] = df[</span><span class="s4">'W'</span><span class="s0">] +  </span><span class="s3">0</span>
+        <span class="s0">print(df)</span>
+          <span class="s0">W         X         Y         Z   novaCol</span>
+<span class="s0">A  </span><span class="s3">0.159219 </span><span class="s0">-</span><span class="s3">0.017063 </span><span class="s0">-</span><span class="s3">0.249028 </span><span class="s0">-</span><span class="s3">0.372518  0.159219</span>
+<span class="s0">B -</span><span class="s3">1.682665 </span><span class="s0">-</span><span class="s3">1.067053  0.252465 </span><span class="s0">-</span><span class="s3">0.734297 </span><span class="s0">-</span><span class="s3">1.682665</span>
+<span class="s0">C -</span><span class="s3">0.352475  0.823740 </span><span class="s0">-</span><span class="s3">0.204616 </span><span class="s0">-</span><span class="s3">1.155274 </span><span class="s0">-</span><span class="s3">0.352475</span>
+<span class="s0">D -</span><span class="s3">1.128802  0.043349 </span><span class="s0">-</span><span class="s3">0.927690 </span><span class="s0">-</span><span class="s3">1.620974 </span><span class="s0">-</span><span class="s3">1.128802</span>
+<span class="s0">E -</span><span class="s3">0.322817  0.719264 </span><span class="s0">-</span><span class="s3">0.601075 </span><span class="s0">-</span><span class="s3">0.856726 </span><span class="s0">-</span><span class="s3">0.322817</span>
+
+<span class="s1">#Dataframe drop Column</span>
+<span class="s0">df.drop(</span><span class="s4">'novaCol'</span><span class="s2">, </span><span class="s0">axis=</span><span class="s3">1</span><span class="s2">, </span><span class="s0">inplace=</span><span class="s2">True</span><span class="s0">)</span>
+<span class="s0">df</span>
+<span class="s0">W	X	Y	Z</span>
+<span class="s0">A	</span><span class="s3">0.159219	</span><span class="s0">-</span><span class="s3">0.017063	</span><span class="s0">-</span><span class="s3">0.249028	</span><span class="s0">-</span><span class="s3">0.372518</span>
+<span class="s0">B	-</span><span class="s3">1.682665	</span><span class="s0">-</span><span class="s3">1.067053	0.252465	</span><span class="s0">-</span><span class="s3">0.734297</span>
+<span class="s0">C	-</span><span class="s3">0.352475	0.823740	</span><span class="s0">-</span><span class="s3">0.204616	</span><span class="s0">-</span><span class="s3">1.155274</span>
+<span class="s0">D	-</span><span class="s3">1.128802	0.043349	</span><span class="s0">-</span><span class="s3">0.927690	</span><span class="s0">-</span><span class="s3">1.620974</span>
+<span class="s0">E	-</span><span class="s3">0.322817	0.719264	</span><span class="s0">-</span><span class="s3">0.601075	</span><span class="s0">-</span><span class="s3">0.856726</span>
+
+<span class="s0">sms = pd.read_csv(</span><span class="s4">&quot;e:</span><span class="s2">\\</span><span class="s4">@@pandas</span><span class="s2">\\</span><span class="s4">bank.txt&quot;</span><span class="s2">, </span><span class="s0">encoding=</span><span class="s4">&quot;UTF-8&quot;</span><span class="s2">, </span><span class="s0">sep=</span><span class="s4">&quot;;&quot;</span><span class="s2">,</span><span class="s0">usecols = [</span><span class="s4">'age'</span><span class="s2">, </span><span class="s4">'job'</span><span class="s0">])</span>
+<span class="s0">print(sms)</span>
+      <span class="s0">age            job</span>
+<span class="s3">0      30     </span><span class="s0">unemployed</span>
+<span class="s3">1      33       </span><span class="s0">services</span>
+<span class="s3">2      35     </span><span class="s0">management</span>
+<span class="s3">3      30     </span><span class="s0">management</span>
+<span class="s3">4      59    </span><span class="s0">blue-collar</span>
+<span class="s0">...   ...            ...</span>
+<span class="s3">4516   33       </span><span class="s0">services</span>
+<span class="s3">4517   57  </span><span class="s0">self-employed</span>
+<span class="s3">4518   57     </span><span class="s0">technician</span>
+<span class="s3">4519   28    </span><span class="s0">blue-collar</span>
+<span class="s3">4520   44   </span><span class="s0">entrepreneur</span>
+
+<span class="s0">[</span><span class="s3">4521 </span><span class="s0">rows x </span><span class="s3">2 </span><span class="s0">columns]</span>
+
+<span class="s0">print(sms.keys()) </span>
+<span class="s0">Index([</span><span class="s4">'age'</span><span class="s2">, </span><span class="s4">'job'</span><span class="s0">]</span><span class="s2">, </span><span class="s0">dtype=</span><span class="s4">'object'</span><span class="s0">)</span>
+
+ <span class="s0">print(sms.all) </span>
+<span class="s0">&lt;bound method DataFrame.all of       age            job</span>
+<span class="s3">0      30     </span><span class="s0">unemployed</span>
+<span class="s3">1      33       </span><span class="s0">services</span>
+<span class="s3">2      35     </span><span class="s0">management</span>
+<span class="s3">3      30     </span><span class="s0">management</span>
+<span class="s3">4      59    </span><span class="s0">blue-collar</span>
+<span class="s0">...   ...            ...</span>
+<span class="s3">4516   33       </span><span class="s0">services</span>
+<span class="s3">4517   57  </span><span class="s0">self-employed</span>
+<span class="s3">4518   57     </span><span class="s0">technician</span>
+<span class="s3">4519   28    </span><span class="s0">blue-collar</span>
+<span class="s3">4520   44   </span><span class="s0">entrepreneur</span>
+
+<span class="s0">[</span><span class="s3">4521 </span><span class="s0">rows x </span><span class="s3">2 </span><span class="s0">columns]&gt;</span>
+
+ <span class="s0">print(sms.dtypes) </span>
+<span class="s0">age     int64</span>
+<span class="s0">job    object</span>
+<span class="s0">dtype: object</span>
+
+<span class="s0">sms.describe</span>
+<span class="s0">&lt;bound method NDFrame.describe of       age            job</span>
+<span class="s3">0      30     </span><span class="s0">unemployed</span>
+<span class="s3">1      33       </span><span class="s0">services</span>
+<span class="s3">2      35     </span><span class="s0">management</span>
+<span class="s3">3      30     </span><span class="s0">management</span>
+<span class="s3">4      59    </span><span class="s0">blue-collar</span>
+<span class="s0">...   ...            ...</span>
+<span class="s3">4516   33       </span><span class="s0">services</span>
+<span class="s3">4517   57  </span><span class="s0">self-employed</span>
+<span class="s3">4518   57     </span><span class="s0">technician</span>
+<span class="s3">4519   28    </span><span class="s0">blue-collar</span>
+<span class="s3">4520   44   </span><span class="s0">entrepreneur</span>
+
+<span class="s0">[</span><span class="s3">4521 </span><span class="s0">rows x </span><span class="s3">2 </span><span class="s0">columns]&gt;</span>
+
+<span class="s0">sms.columns</span>
+<span class="s0">Index([</span><span class="s4">'age'</span><span class="s2">, </span><span class="s4">'job'</span><span class="s0">]</span><span class="s2">, </span><span class="s0">dtype=</span><span class="s4">'object'</span><span class="s0">)</span>
+<span class="s0">sms.tail()</span>
+<span class="s0">age	job</span>
+<span class="s3">4516	33	</span><span class="s0">services</span>
+<span class="s3">4517	57	</span><span class="s0">self-employed</span>
+<span class="s3">4518	57	</span><span class="s0">technician</span>
+<span class="s3">4519	28	</span><span class="s0">blue-collar</span>
+<span class="s3">4520	44	</span><span class="s0">entrepreneur</span>
+
+
+<span class="s0">*/</span></pre>
+</body>
+</html>

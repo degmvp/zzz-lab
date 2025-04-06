@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slideshow com Botões Centralizados</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: white;
+            flex-direction: column; /* Organiza os elementos em coluna */
+        }
+        img {
+            max-width: 90%;
+            max-height: 80%; /* Reduz um pouco a altura para dar espaço aos botões */
+            border: 2px solid #fff; /* Adiciona uma borda para melhor visualização */
+        }
+        .button-container {
+            margin-top: 20px; /* Espaço entre a imagem e os botões */
+            display: flex;
+            gap: 10px; /* Espaço entre os botões */
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: goldenrod;
+        }
+    </style>
+</head>
+<body>
+    <div id="slideshow-container">
+        <img id="slideshow" src="" alt="Slideshow Image">
+        <div class="button-container">
+            <button onclick="showPreviousImage()">Previous</button>
+            <button onclick="showNextImage()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        // Lista de imagens no diretório zzz-x-img
+        const images = [
+            'zzz-x-img/img1.jpg',
+            'zzz-x-img/img2.jpg',
+            'zzz-x-img/img3.jpg',
+            'zzz-x-img/img4.jpg',
+            'zzz-x-img/img5.jpg',
+            'zzz-x-img/img6.jpg',
+            'zzz-x-img/img7.jpg',
+            'zzz-x-img/img8.jpg',
+            'zzz-x-img/img9.jpg',
+            'zzz-x-img/img10.jpg',
+            'zzz-x-img/img11.jpg',
+            'zzz-x-img/img12.jpg'
+            // Adicione mais imagens conforme necessário
+        ];
+
+        let currentIndex = 0;
+
+        function showNextImage() {
+            currentIndex = (currentIndex + 1) % images.length; // Avança para a próxima imagem
+            document.getElementById('slideshow').src = images[currentIndex];
+        }
+
+        function showPreviousImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length; // Volta para a imagem anterior
+            document.getElementById('slideshow').src = images[currentIndex];
+        }
+
+        function startSlideshow() {
+            if (images.length > 0) {
+                document.getElementById('slideshow').src = images[currentIndex]; // Exibe a primeira imagem
+            } else {
+                console.error('Nenhuma imagem encontrada.');
+            }
+        }
+
+        // Iniciar o slideshow
+        startSlideshow();
+    </script>
+</body>
+</html>

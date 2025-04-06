@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bit Arithmetic and Auxiliary Tables</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+   
+      background:radial-gradient(white,#026932);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+    }
+    h1 {
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    input, button {
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      background: #f9f9f9;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Decode Permissions Using Bit Arithmetic</h1>
+
+    <!-- Tabela de Referência -->
+    <h2>Permission Reference</h2>
+    <table id="permission-table">
+      <thead>
+        <tr>
+          <th>Bit Value</th>
+          <th>Permission Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Linhas serão geradas dinamicamente -->
+      </tbody>
+    </table>
+
+    <!-- Entrada de Dados -->
+    <label for="permissions">Enter Permission Value (e.g., 7, 9):</label>
+    <input type="number" id="permissions" placeholder="e.g., 7">
+
+    <button onclick="decodePermissions()">Decode Permissions</button>
+
+    <h2>Result:</h2>
+    <pre id="result"></pre>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
